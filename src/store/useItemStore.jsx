@@ -5,10 +5,10 @@ export const useItemStore = create((set) => ({
     item: null,
     stats: null,
     items: [],
-
+   
     getItems: async () => {
         try {
-            const data = await api.getItems()  // api уже возвращает res.data
+            const data = await api.getItems()  
             set({ items: data })
         } catch (error) {
             console.error(error)
@@ -26,7 +26,7 @@ export const useItemStore = create((set) => ({
 
     getItem: async (id) => {
         try {
-            const data = await api.getItemDetails(id)  // исправлено имя функции
+            const data = await api.getItemDetails(id)  
             set({ item: data })
         } catch (error) {
             console.error(error)

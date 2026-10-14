@@ -56,7 +56,7 @@ const getItemBids = async (id) => {
 }
 const getStats = async () => {
     const res = await apiInstance.get("/stats")
-    return res
+    return res.data
 }
 
 

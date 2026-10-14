@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")).render(
                     <Route index element={<ItemsList />} />
                     <Route path="register" element={<Register />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="bids" element={<MyBids />} />
+                    <Route path="bids" element={<AuthGuard> <MyBids /> </AuthGuard>} />
                     <Route path="item/:id" element={<ItemDetail />} />
                     <Route path="/create-item" element={<AuthGuard><CreateItem /></AuthGuard>} />
                 </Route>

@@ -20,6 +20,8 @@ const ItemDetail = () => {
 
     const handleBid = async (e) => {
         e.preventDefault()
+
+        if (!session) return navigate('/register')
         setError("")
 
         const form = e.target
@@ -81,6 +83,7 @@ const ItemDetail = () => {
     useEffect(() => {
         session && item && setIsOwner(session?.user?.id === item.userId)
     }, [session, item])
+
     const handleDelete = async () => {
         try {
             await api.deleteItems({ id })
@@ -142,7 +145,12 @@ const ItemDetail = () => {
                                         min={item.highestBid}
                                         step="100"
                                     />
-                                    <Button type="submit" className="btn-bid">Сделать ставку</Button>
+
+
+
+                                    {!isOwner && <Button type="submit" className="btn-bid">Сделать ставку</Button>
+                                    }
+
                                     {isOwner && (
                                         <Button onClick={handleDelete} type="button" className="btn-delete" >
                                             Удалить товар
@@ -161,32 +169,32 @@ const ItemDetail = () => {
                         </div>
 
                         <div className="bids-list">
-                                {bids.length === 0 && <p>Ставок пока нет</p>}
-                                {bids.map((bid, index) => (
-                                    <div
-                                        className={`bid-item ${index === 0 ? "highest-bid-item" : ""}`}
-                                        key={bid.id}
-                                    >
-                                        <div className="bid-user">
-                                            <div className="bid-avatar">
-                                                {bid.username?.slice(0, 2).toUpperCase()}
-                                            </div>
-                                            <div className="bid-details">
-                                                <span className="bid-username">{bid.username}</span>
-                                                <span className="bid-time">
-                                                    {new Date(bid.createdAt).toLocaleString("ru-RU")}
-                                                </span>
-                                            </div>
-                                            {index === 0 && (
-                                                <span className="highest-badge">🏆 Лидирует</span>
-                                            )}
+                            {bids.length === 0 && <p>Ставок пока нет</p>}
+                            {bids.map((bid, index) => (
+                                <div
+                                    className={`bid-item ${index === 0 ? "highest-bid-item" : ""}`}
+                                    key={bid.id}
+                                >
+                                    <div className="bid-user">
+                                        <div className="bid-avatar">
+                                            {bid.username?.slice(0, 2).toUpperCase()}
                                         </div>
-                                        <div className="bid-amount">{bid.amount} ₽</div>
+                                        <div className="bid-details">
+                                            <span className="bid-username">{bid.username}</span>
+                                            <span className="bid-time">
+                                                {new Date(bid.createdAt).toLocaleString("ru-RU")}
+                                            </span>
+                                        </div>
+                                        {index === 0 && (
+                                            <span className="highest-badge">🏆 Лидирует</span>
+                                        )}
                                     </div>
-                                ))}
-                            </div>
+                                    <div className="bid-amount">{bid.amount} ₽</div>
+                                </div>
+                            ))}
                         </div>
-                    </>)}
+                    </div>
+                </>)}
             </div>
         </div>
     )

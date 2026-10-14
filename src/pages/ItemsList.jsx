@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react'
 import ItemCard from '../components/ItemCard'
 import { useItemStore } from '../store/useItemStore'
+import { api } from '../api/api'
 
 const ItemsList = () => {
-  const { items, getItems, stats, getStats } = useItemStore()
+    const { items, getItems, stats, getStats } = useItemStore()
     const [error, setError] = useState('')
-      const [timerId, setTimerId] = useState(undefined)
+    const [timerId, setTimerId] = useState(undefined)
 
     useEffect(() => {
-        const loadData = async () => { 
+        const loadData = async () => {
             setError('')
             try {
-                await getStats()
-                await getItems()
+                const res = getStats()
+                await getItems(res)
+
             } catch (error) {
                 console.error(error)
                 setError(error.response?.data?.error || 'Ошибка загрузки')
             }
         }
         loadData()
-    setTimerId(setInterval(() => {
+        setTimerId(setInterval(() => {
             (async () => {
                 try {
                     await getItems()
@@ -57,8 +59,8 @@ const ItemsList = () => {
             </div>
 
             <div className="items-grid">
-                {items?.map((item) => (
-                    <ItemCard key={item.id} {...item} />
+                {items.map((item, i) => (
+                    <ItemCard key={i} {...item} />
                 ))}
             </div>
         </div>
